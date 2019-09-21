@@ -1,10 +1,14 @@
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'screens/battle_screen/note.dart';
+import 'screens/battle_screen/note_loader.dart';
 
 import 'screens/battle_screen/batttle_screen.dart';
 
@@ -15,6 +19,7 @@ class MyGame extends Game {
   MyGame() {
     Flame.util.addGestureRecognizer(createTapRecognizer());
     _battleScreen = new BattleScreen();
+    _battleScreen.initBattleScreen();
   }
 
   @override
