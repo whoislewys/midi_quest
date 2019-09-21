@@ -1,0 +1,22 @@
+name: yeash
+description: oh yeah
+
+dependencies:
+  screen:
+  flutter:
+    sdk: flutter
+  flame:
+  flutter_midi:
+    path: C:\Users\whois\dev\flutter\flutter_midi
+  # can also use this git dep to get a stable version
+  # git:
+  #  url: git://github.com/whoislewys/flutter_midi.git
+  
+      
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  # add assets here
+  # assets:
