@@ -100,7 +100,7 @@ packages:
   flutter_midi:
     dependency: "direct main"
     description:
-      path: "C:\\Users\\idiscipulo\\Programming\\flutter_midi"
+      path: "C:\\Users\\whois\\dev\\flutter\\flutter_midi"
       relative: false
     source: path
     version: "1.0.0"
