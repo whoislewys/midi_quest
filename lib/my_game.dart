@@ -6,20 +6,25 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
+import 'screens/battle_screen/batttle_screen.dart';
+
 class MyGame extends Game {
+
+  BattleScreen _battleScreen;
 
   MyGame() {
     Flame.util.addGestureRecognizer(createTapRecognizer());
+    _battleScreen = new BattleScreen();
   }
 
   @override
   void render(Canvas canvas) {
-    print('render');
+    _battleScreen.render();
   }
 
   @override
   void update(double t) {
-    print('update');
+    _battleScreen.update();
   }
 
   @override
