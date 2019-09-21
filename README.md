@@ -1,16 +1,17 @@
-# sunhacks2k19
+# MIDI QUEST
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Making a new playable song
+1. make the song in ableton for easy composition and midi editing
+1. make a midi track for player to play with max of 3 notes - midi notes 48, 49, and 50 (starts on C3).
+1. make a new dir structure for that song like:
+```
+test_song/
+├── midi/
+│   ├── test_midi.MID
+├── sound/
+│   ├── test_sound.wav
+```
+1. export midi from ableton into the midi subdir you just made, export wav into the sound subdir you just made
+1. open the midi you just exported from ableton in REAPER
+1. In reaper, `File -> Export project MIDI...`
+1. Make sure you check `Merge to Single MIDI track`, and `Embed project tempo...`
