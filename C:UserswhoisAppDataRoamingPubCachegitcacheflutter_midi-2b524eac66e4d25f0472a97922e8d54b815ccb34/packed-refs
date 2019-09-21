@@ -1,6 +1,0 @@
-# pack-refs with: peeled fully-peeled sorted 
-64591885c52dc319f5d68b60acdbc5159abbfc06 refs/heads/develop
-f8bcfedbf03172aadba22ff554f262f6c732ecfd refs/heads/master
-1a4e19e7766f6947fe20bba08f8bd23f073c8e84 refs/heads/sheet_music-development
-c86e64cd3d83ebc30279291ba30ddc2d1158c4b8 refs/heads/worksheet
-bf1a567e9fdf2c21148908de589ddcae5de8b4a0 refs/tags/1.0.0
