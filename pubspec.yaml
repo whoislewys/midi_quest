@@ -1,4 +1,4 @@
-name: yeash
+name: midi_quest
 description: oh yeah
 
 dependencies:
@@ -8,7 +8,7 @@ dependencies:
   flame:
   flutter_midi:
     path: C:\Users\idiscipulo\Programming\flutter_midi
-  # can also use this git dep to get a stable version
+  dart_midi:
         
 dev_dependencies:
   flutter_test:
@@ -22,4 +22,7 @@ dependency_overrides:
 
 flutter:
   # add assets here
-  # assets:
+  assets:
+    - assets/songs/test_song/midi/test_song.MID
+    - assets/songs/test_song/midi/test_song_C3.MID
+    - assets/songs/test_song/sound/test-song.wav
