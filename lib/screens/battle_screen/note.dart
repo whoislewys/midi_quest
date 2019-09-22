@@ -5,13 +5,29 @@
 // 3 midi are used notes
 // 48, 49, 50
 class Note {
-  double noteTrack; // first track is closest to left thumb, second is in the middle, third is close to right thumb
-  double noteEnd;
-  double noteStartTime;
+  int _noteNumber = -1; // first track is closest to left thumb, second is in the middle, third is close to right thumb
+  int _noteEnd = -1;
+  int _noteStartTime = -1;
 
-  Note(double noteTrack, double noteEnd, double noteStartTime) {
-    this.noteTrack = noteTrack;
-    this.noteEnd = noteTrack;
-    this.noteStartTime = noteStartTime;
-  }
+  int get noteNumber => _noteNumber;
+  void set noteNumber(int noteNumber) => _noteNumber = noteNumber;
+
+  int get noteEnd => _noteEnd;
+  void set noteEnd(int noteEnd) => _noteEnd = noteEnd;
+
+  int get noteStartTime => _noteStartTime;
+  void set noteStartTime(int noteStartTime) => _noteStartTime = noteStartTime;
+
+  Note() {}
+
+  // Note(double noteNumber, double noteEnd, double noteStartTime) {
+  //   this.noteNumber = noteNumber;
+  //   this.noteEnd = noteNumber;
+  //   this.noteStartTime = noteStartTime;
+  // }
+
+  // @override
+  // String toString() {
+
+  // }
 }

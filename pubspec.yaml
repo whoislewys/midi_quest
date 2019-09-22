@@ -24,4 +24,5 @@ flutter:
   # add assets here
   assets:
     - assets/songs/test_song/midi/test_song.MID
+    - assets/songs/test_song/midi/test_song_C3.MID
     - assets/songs/test_song/sound/test-song.wav

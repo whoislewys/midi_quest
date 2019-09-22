@@ -12,7 +12,9 @@ class BattleScreen {
   }
 
   void initBattleScreen() async {
-    ByteData midiBytes = await rootBundle.load('assets/songs/test_song/midi/test_song.MID');
+    // instead of loading each track from a sep file, could also do a single multitrack file
+    // doesnt really matter tbh. just wanna flex how my brain thinks of many possible solutions
+    ByteData midiBytes = await rootBundle.load('assets/songs/test_song/midi/test_song_C3.MID');
     List<List<Note>> notes = loadNotesForTrackFromMidi(midiBytes);
   }
 
