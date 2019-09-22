@@ -3,31 +3,13 @@ import 'package:flutter/services.dart';
 
 import 'note.dart';
 
+/// a script to parse midi notes from a file, get their start, ends, and lengths
 List<Note> loadNotesForTrackFromMidi(ByteData midiBytes) {  
   var parser = MidiParser();
   List<int> buf = midiBytes.buffer.asUint8List();
   MidiFile parsedMidi = parser.parseMidiFromBuffer(buf);
 
-  /*
-  TODO: i need to parse this track into
-  [
-    track1: [
-      new Note(
-      midiNote (48),
-      noteStartTime,
-      noteEndTime,
-      )
-    ]
-  ]
-  */
-
-  /*
-  i need a global time counter to keep track of total midi ticks
-  eeach midi note on/off pair read, will add its deltatime to the global time
-  i will then make a Note obj by using the global time and relative time
-  */
-
-  // filter to only noteon /off evts
+  // filter all MIDI events in track down to only noteon/off evts
   List<MidiEvent> noteOnOffEvents = parsedMidi.tracks[0].where((midiEvent) => midiEvent is NoteOnEvent || midiEvent is NoteOffEvent).toList();
   
   // init time counter
@@ -58,35 +40,8 @@ List<Note> loadNotesForTrackFromMidi(ByteData midiBytes) {
     notes.add(curNote);
   }
 
-  // print('delta times');
-  // int noteOnCount=1;
-  // int noteOffCount=1;
-  // noteOnOffEvents.forEach((noteOnOffEvent) {
-  //   // since im parsing the play events for one midi note at a time
-  //   // i am guaranteed to get a note on followed by a note off each time
-  //   // i want to get two events at a time and build a note object from them
-  //   // increment global time using the info from those events
-  //   // and build up my list of notes from that
-  //   if(noteOnOffEvent is NoteOnEvent) {
-  //     print('noteonevent num: $noteOnCount');
-  //     noteOnCount++;
-  //   }
-  //   if(noteOnOffEvent is NoteOffEvent) {
-  //     print('noteoffevent num: $noteOffCount');
-  //     noteOffCount++;
-  //   }
-  //   if (noteOnOffEvent.deltaTime != 0) {
-  //     ticksSoFar += noteOnOffEvent.deltaTime;
-  //   }
-  //   print('tricks sofar $ticksSoFar');
-  // });
-
-  // how to get pairs of items from an iterable in dart?
-
   return notes;
 }
-
-
 
 /// Returns BPM/tempo given a MIDI SetTempoEvent
 double getBpmForMidiEvent(SetTempoEvent tempoEvent) {

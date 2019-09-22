@@ -1,18 +1,15 @@
-import 'dart:io';
 import 'dart:ui';
 
-import 'package:flame/components/component.dart';
 import 'package:flame/components/events/gestures.dart';
-import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'screens/battle_screen/note.dart';
 import 'screens/battle_screen/note_loader.dart';
 
 import 'screens/battle_screen/batttle_screen.dart';
+import 'screens/battle_screen/note_button.dart';
 
 /*
 1. extend basegame. pass the add function down to the battlescreen
@@ -32,16 +29,22 @@ class MyGame extends BaseGame {
       components.where((c) => c is Tapeable).cast();
       
   MyGame() {
-    // _battleScreen = new BattleScreen();
-    // _battleScreen.initBattleScreen();
     print('constructing mygame. size: $size');
     size ??= window.physicalSize / window.devicePixelRatio;
     print('constructed mygame. size: $size');
-    
     screenMiddle = size.width/2;
-
     playSquaresY = size.height - (size.height / 4);
 
+    // _battleScreen = new BattleScreen();
+    // _battleScreen.initBattleScreen();
+
+    _renderNoteButtonRow();
+
+    // print('tappable components: ${components.where((c) => c is Tapeable).cast()}');
+  }
+
+  /// Adds bottom row of note buttons to baseGame component list
+  void _renderNoteButtonRow() {
     double firstNoteButtonX = screenMiddle - size.width * .2;
     Offset firstRectOffset = new Offset(firstNoteButtonX, playSquaresY);
     Color firstNoteButtonColor = const Color(0xFF990000);
@@ -57,8 +60,6 @@ class MyGame extends BaseGame {
     add(NoteButton(firstRectOffset, noteTouchWidth, firstNoteButtonColor));
     add(NoteButton(secondRectOffset, noteTouchWidth, secondNoteButtonColor));
     add(NoteButton(thirdRectOffset, noteTouchWidth, thirdNoteButtonColor));
-
-    print('tapable components: ${components.where((c) => c is Tapeable).cast()}');
   }
 
   @override onTapCancel() {
@@ -87,49 +88,4 @@ class MyGame extends BaseGame {
   //   ..onTapCancel = super.onTapCancel
   //   ..onTapDown = super.onTapDown;
   // }
-}
-
-class NoteButton extends PositionComponent with Tapeable {
-  Offset rectOffset;
-  double width;
-  Color color;
-
-  NoteButton(Offset rectOffset, double width, Color color) {
-    print('constructing notetouch, offset $rectOffset');
-    // todo: make these buttons pretty.
-    // 1. i could instead of drawing rects shit, use a flutter button in the GameUI tree
-    // they could be aligned in the same way i align these (relative to window)
-    // OR, keep the drawing logic here, and draw a sprite instead of a plain ol rect
-    // 2. tap down could switch to a down press sprite
-    this.rectOffset = rectOffset;
-    this.width = width;
-    this.color = color;
-  }
-
-  render(Canvas canvas) {
-    canvas.drawRect(
-      Rect.fromCircle(center: rectOffset, radius: width),
-      Paint()..color = color
-    );
-  }
-
-  update(double t) {
-  }
-
-  @override
-  onTapDown(TapDownDetails details) {
-    print('tap down');
-    // print('tapped down in notetouch with offset $details');
-  }
-
-  @override
-  onTapUp(TapUpDetails details) {
-    print('tap upppppppppppppp');
-    // print('tapped up notetouch with offset $details');
-  }
-
-  @override
-  onTapCancel() {
-    print('tap cancel');
-  }
 }
