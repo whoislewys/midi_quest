@@ -18,8 +18,6 @@ class Note {
   int get noteStartTime => _noteStartTime;
   void set noteStartTime(int noteStartTime) => _noteStartTime = noteStartTime;
 
-  Note() {}
-
   // Note(double noteNumber, double noteEnd, double noteStartTime) {
   //   this.noteNumber = noteNumber;
   //   this.noteEnd = noteNumber;

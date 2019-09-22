@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'note.dart';
 
-List<List<Note>> loadNotesForTrackFromMidi(ByteData midiBytes) {  
+List<Note> loadNotesForTrackFromMidi(ByteData midiBytes) {  
   var parser = MidiParser();
   List<int> buf = midiBytes.buffer.asUint8List();
   MidiFile parsedMidi = parser.parseMidiFromBuffer(buf);
@@ -33,29 +33,28 @@ List<List<Note>> loadNotesForTrackFromMidi(ByteData midiBytes) {
   // init time counter
   int ticksSoFar = 0;
   List<Note> notes = [];
+
   for (int i=0; i < noteOnOffEvents.length-1; i+=2) {
     Note curNote = new Note();
     var noteStartEvt = noteOnOffEvents[i];
     var noteEndEvt = noteOnOffEvents[i+1];
     if (noteStartEvt.deltaTime != 0) {
       // if note start has empty time before it, inc time counter
-      print('tics so far: $ticksSoFar');
       ticksSoFar += noteStartEvt.deltaTime;
       // now set the start time to NOW on the note obj
-      // curNote.noteStartTime = ticksSofar;
+      curNote.noteStartTime = ticksSoFar;
     } else {
       // if no empty time before note start, just set start time to NOW on the note obj
-      // curNote.noteStartTime = ticksSofar;
+      curNote.noteStartTime = ticksSoFar;
     }
 
     if (noteEndEvt.deltaTime != 0) {
       // if note end has empty time before it, inc time counter
       ticksSoFar += noteEndEvt.deltaTime;
-      // curNote.noteEnd = ticksSofar;
+      curNote.noteEnd = ticksSoFar;
     } else {
-      // curNote.noteEnd = ticksSofar;
+      curNote.noteEnd = ticksSoFar;
     }
-
     notes.add(curNote);
   }
 
@@ -84,7 +83,7 @@ List<List<Note>> loadNotesForTrackFromMidi(ByteData midiBytes) {
 
   // how to get pairs of items from an iterable in dart?
 
-  return [notes];
+  return notes;
 }
 
 
