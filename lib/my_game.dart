@@ -29,8 +29,11 @@ class MyGame extends BaseGame {
   double thirdPlaySquareX = 0.0;
   double playSquaresY = 0.0;
 
+  // components is a set from the BaseGame class. you add to it with the add() method
+  Iterable<Tapeable> get _tapeableComponents =>
+      components.where((c) => c is Tapeable).cast();
+      
   MyGame() {
-    // Flame.util.addGestureRecognizer(createTapRecognizer());
     // _battleScreen = new BattleScreen();
     // _battleScreen.initBattleScreen();
     print('constructing mygame. size: $size');
@@ -51,12 +54,32 @@ class MyGame extends BaseGame {
     print('tapable components: ${components.where((c) => c is Tapeable).cast()}');
   }
 
-  TapGestureRecognizer createTapRecognizer() {
-    print('created tap recognizer');
-    return new TapGestureRecognizer()
-    ..onTapUp = super.onTapUp
-    ..onTapDown = super.onTapDown;
+  @override onTapCancel() {
+    _tapeableComponents.forEach((c) => c.onTapCancel());
   }
+
+  /// for some reason, the collision resolution in BaseGame (_checkTapOverlap method)
+  /// was swallowing onTapDown events for my components
+  @override onTapDown(TapDownDetails details) {
+    _tapeableComponents.forEach((c) => c.onTapDown(details));
+  }
+
+  @override onTapUp(TapUpDetails details) {
+    _tapeableComponents.forEach((c) => c.onTapUp(details));
+  }
+
+  /// a TapGestureRecognizer is created and attached on Game instantiation for you
+  /// if you want more advanced gesture recognizers, you have to make them yourself as below
+  /// To use them, call them in `main.dart`
+  // TapGestureRecognizer createTapRecognizer() {
+  //   // might be able to remove tap gesture recognizer
+  //   // looks like base game class attaches one on game attach and initial build
+  //   print('created tap recognizer');
+  //   return new TapGestureRecognizer()
+  //   ..onTapUp = super.onTapUp
+  //   ..onTapCancel = super.onTapCancel
+  //   ..onTapDown = super.onTapDown;
+  // }
 }
 
 class NoteTouch extends PositionComponent with Tapeable {
@@ -79,12 +102,14 @@ class NoteTouch extends PositionComponent with Tapeable {
 
   @override
   onTapDown(TapDownDetails details) {
-    print('tapped down in notetouch with offset $details');
+    print('tap down');
+    // print('tapped down in notetouch with offset $details');
   }
 
   @override
   onTapUp(TapUpDetails details) {
-    print('tapped up notetouch with offset $details');
+    print('tap upppppppppppppp');
+    // print('tapped up notetouch with offset $details');
   }
 
   @override

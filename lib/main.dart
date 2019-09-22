@@ -10,8 +10,7 @@ main() async {
   // init flame
   await Flame.util.fullScreen();
   await Flame.util.setOrientation(DeviceOrientation.portraitUp);
-
-  Size size = await Flame.util.initialDimensions();
+  await Flame.util.initialDimensions();
   // todo: load flame images here
 
   MyGame game = new MyGame();
@@ -37,6 +36,10 @@ main() async {
       )
     )
   ));
-  
-  Flame.util.addGestureRecognizer(game.createTapRecognizer());
+
+  /// Adding custom a GestureRecognizer must be done after calling `runApp`.
+  /// If you don't, Flutter can not bind it correctly -
+  /// you will get errors and your recognizer won't work.
+  /// TLDR: Add a custom GestureRecognizer like this.
+  // Flame.util.addGestureRecognizer(game.createTapRecognizer());
 }
