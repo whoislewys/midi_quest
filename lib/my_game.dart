@@ -22,11 +22,9 @@ class MyGame extends BaseGame {
   // constants for bottom row of noteButtons
   Size size;
   
+  double screenMiddle = 0.0;
+
   double noteTouchWidth = 30;
-  double middle = 0.0;
-  double firstPlaySquareX = 0.0;
-  double secondPlaySquareX = 0.0;
-  double thirdPlaySquareX = 0.0;
   double playSquaresY = 0.0;
 
   // components is a set from the BaseGame class. you add to it with the add() method
@@ -39,18 +37,27 @@ class MyGame extends BaseGame {
     print('constructing mygame. size: $size');
     size ??= window.physicalSize / window.devicePixelRatio;
     print('constructed mygame. size: $size');
-    middle = size.width/2;
-    firstPlaySquareX = middle - size.width * .2;
-    secondPlaySquareX = middle; 
-    thirdPlaySquareX = middle + size.width * .2;  
+    
+    screenMiddle = size.width/2;
+
     playSquaresY = size.height - (size.height / 4);
 
-    Offset firstRectOffset = new Offset(firstPlaySquareX, playSquaresY);
-    add(NoteTouch(firstRectOffset, noteTouchWidth));
-    Offset secondRectOffset = new Offset(secondPlaySquareX, playSquaresY);
-    add(NoteTouch(secondRectOffset, noteTouchWidth));
-    Offset thirdRectOffset = new Offset(thirdPlaySquareX, playSquaresY);
-    add(NoteTouch(thirdRectOffset, noteTouchWidth));
+    double firstNoteButtonX = screenMiddle - size.width * .2;
+    Offset firstRectOffset = new Offset(firstNoteButtonX, playSquaresY);
+    Color firstNoteButtonColor = const Color(0xFF990000);
+
+    double secondNoteButtonX = screenMiddle; 
+    Offset secondRectOffset = new Offset(secondNoteButtonX, playSquaresY);
+    Color secondNoteButtonColor = const Color(0xFF009900);
+
+    double thirdNoteButtonX = screenMiddle + size.width * .2;  
+    Offset thirdRectOffset = new Offset(thirdNoteButtonX, playSquaresY);
+    Color thirdNoteButtonColor = const Color(0xFF000099);
+
+    add(NoteTouch(firstRectOffset, noteTouchWidth, firstNoteButtonColor));
+    add(NoteTouch(secondRectOffset, noteTouchWidth, secondNoteButtonColor));
+    add(NoteTouch(thirdRectOffset, noteTouchWidth, thirdNoteButtonColor));
+
     print('tapable components: ${components.where((c) => c is Tapeable).cast()}');
   }
 
@@ -85,15 +92,20 @@ class MyGame extends BaseGame {
 class NoteTouch extends PositionComponent with Tapeable {
   Offset rectOffset;
   double width;
+  Color color;
 
-  NoteTouch(Offset rectOffset, double width) {
+  NoteTouch(Offset rectOffset, double width, Color color) {
     print('constructing notetouch, offset $rectOffset');
     this.rectOffset = rectOffset;
     this.width = width;
+    this.color = color;
   }
 
   render(Canvas canvas) {
-    canvas.drawRect(Rect.fromCircle(center: rectOffset, radius: width), Paint()..color = const Color(0xFF00FF00));
+    canvas.drawRect(
+      Rect.fromCircle(center: rectOffset, radius: width),
+      Paint()..color = color
+    );
   }
 
 
