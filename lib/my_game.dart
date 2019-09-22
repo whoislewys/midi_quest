@@ -54,9 +54,9 @@ class MyGame extends BaseGame {
     Offset thirdRectOffset = new Offset(thirdNoteButtonX, playSquaresY);
     Color thirdNoteButtonColor = const Color(0xFF000099);
 
-    add(NoteTouch(firstRectOffset, noteTouchWidth, firstNoteButtonColor));
-    add(NoteTouch(secondRectOffset, noteTouchWidth, secondNoteButtonColor));
-    add(NoteTouch(thirdRectOffset, noteTouchWidth, thirdNoteButtonColor));
+    add(NoteButton(firstRectOffset, noteTouchWidth, firstNoteButtonColor));
+    add(NoteButton(secondRectOffset, noteTouchWidth, secondNoteButtonColor));
+    add(NoteButton(thirdRectOffset, noteTouchWidth, thirdNoteButtonColor));
 
     print('tapable components: ${components.where((c) => c is Tapeable).cast()}');
   }
@@ -89,13 +89,18 @@ class MyGame extends BaseGame {
   // }
 }
 
-class NoteTouch extends PositionComponent with Tapeable {
+class NoteButton extends PositionComponent with Tapeable {
   Offset rectOffset;
   double width;
   Color color;
 
-  NoteTouch(Offset rectOffset, double width, Color color) {
+  NoteButton(Offset rectOffset, double width, Color color) {
     print('constructing notetouch, offset $rectOffset');
+    // todo: make these buttons pretty.
+    // 1. i could instead of drawing rects shit, use a flutter button in the GameUI tree
+    // they could be aligned in the same way i align these (relative to window)
+    // OR, keep the drawing logic here, and draw a sprite instead of a plain ol rect
+    // 2. tap down could switch to a down press sprite
     this.rectOffset = rectOffset;
     this.width = width;
     this.color = color;
@@ -107,7 +112,6 @@ class NoteTouch extends PositionComponent with Tapeable {
       Paint()..color = color
     );
   }
-
 
   update(double t) {
   }
