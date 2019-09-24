@@ -5,8 +5,6 @@ import 'package:flame/game.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'screens/battle_screen/note.dart';
-import 'screens/battle_screen/note_loader.dart';
 
 import 'screens/battle_screen/batttle_screen.dart';
 import 'screens/battle_screen/note_button.dart';
@@ -15,64 +13,32 @@ import 'screens/battle_screen/note_button.dart';
 1. extend basegame. pass the add function down to the battlescreen
 */
 class MyGame extends BaseGame {
-  // BattleScreen _battleScreen;
-  // constants for bottom row of noteButtons
-  Size size;
-  
-  double screenMiddle = 0.0;
+  BattleScreen _battleScreen;
 
-  double noteTouchWidth = 30;
-  double playSquaresY = 0.0;
-
-  // components is a set from the BaseGame class. you add to it with the add() method
+  /// `components` is a set from the BaseGame class that gets rendered, updated every game tick.
+  /// you add to it with the add() method
   Iterable<Tapeable> get _tapeableComponents =>
       components.where((c) => c is Tapeable).cast();
       
   MyGame() {
-    print('constructing mygame. size: $size');
-    size ??= window.physicalSize / window.devicePixelRatio;
-    print('constructed mygame. size: $size');
-    screenMiddle = size.width/2;
-    playSquaresY = size.height - (size.height / 4);
-
-    // _battleScreen = new BattleScreen();
-    // _battleScreen.initBattleScreen();
-
-    _renderNoteButtonRow();
-
-    // print('tappable components: ${components.where((c) => c is Tapeable).cast()}');
+    _battleScreen = new BattleScreen(add);
+    _battleScreen.initBattleScreen();
   }
 
-  /// Adds bottom row of note buttons to baseGame component list
-  void _renderNoteButtonRow() {
-    double firstNoteButtonX = screenMiddle - size.width * .2;
-    Offset firstRectOffset = new Offset(firstNoteButtonX, playSquaresY);
-    Color firstNoteButtonColor = const Color(0xFF990000);
-
-    double secondNoteButtonX = screenMiddle; 
-    Offset secondRectOffset = new Offset(secondNoteButtonX, playSquaresY);
-    Color secondNoteButtonColor = const Color(0xFF009900);
-
-    double thirdNoteButtonX = screenMiddle + size.width * .2;  
-    Offset thirdRectOffset = new Offset(thirdNoteButtonX, playSquaresY);
-    Color thirdNoteButtonColor = const Color(0xFF000099);
-
-    add(NoteButton(firstRectOffset, noteTouchWidth, firstNoteButtonColor));
-    add(NoteButton(secondRectOffset, noteTouchWidth, secondNoteButtonColor));
-    add(NoteButton(thirdRectOffset, noteTouchWidth, thirdNoteButtonColor));
-  }
-
-  @override onTapCancel() {
+  @override
+  onTapCancel() {
     _tapeableComponents.forEach((c) => c.onTapCancel());
   }
 
-  /// for some reason, the collision resolution in BaseGame (_checkTapOverlap method)
-  /// was swallowing onTapDown events for my components
-  @override onTapDown(TapDownDetails details) {
+  /// for some reason, the collision resolution in BaseGame's onTapDown (_checkTapOverlap method)
+  /// was swallowing onTapDown events for my components. override to fix that
+  @override
+  onTapDown(TapDownDetails details) {
     _tapeableComponents.forEach((c) => c.onTapDown(details));
   }
 
-  @override onTapUp(TapUpDetails details) {
+  @override
+  onTapUp(TapUpDetails details) {
     _tapeableComponents.forEach((c) => c.onTapUp(details));
   }
 

@@ -6,50 +6,70 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'note.dart';
+import 'note_button.dart';
 import 'note_loader.dart';
 
 class BattleScreen {
+  void Function(Component) add;
+  
   List<Note> _firstTrackNotes = [];
-  List<Note> _secondTrackNotes = [];
-  List<Note> _thirdTrackNotes = [];
+  // List<Note> _secondTrackNotes = [];
+  // List<Note> _thirdTrackNotes = [];
 
-  double firstPlaySquareX = 0.0;
-  double secondPlaySquareX = 0.0;
-  double thirdPlaySquareX = 0.0;
-  double playSquaresY = 0.0;
+  // constants for bottom row of noteButtons
+  Size size;
+  
+  double screenMiddle = 0.0;
+  double noteButtonsY = 0.0;
+  double noteButtonWidth = 30;
 
+  /// Constructs a new BattleScreen
+  /// @param add The function from BaseGame to add components to the global set of components to render
+  /// Renders what the player is about to play
+  BattleScreen(void Function(Component) add) {
+    // init members
+    size ??= window.physicalSize / window.devicePixelRatio;
+    screenMiddle = size.width/2;
+    noteButtonsY = size.height - (size.height / 4);
+    this.add = add;
+
+    // start rendering
+    _renderNoteButtonRow();
+  }
+
+  /// Loads notes for the song that player is about to play
   void initBattleScreen() async {
-    // instead of loading each track from a sep file, could also do a single multitrack file
-    // doesnt really matter tbh. just wanna flex how my brain thinks of many possible solutions
+    // Load notes for the current song
     ByteData trackOneMidiBytes = await rootBundle.load('assets/songs/test_song/midi/test_song_C3.MID');
     List<Note> firstTrackNotes = loadNotesForTrackFromMidi(trackOneMidiBytes); 
     _firstTrackNotes = firstTrackNotes;
+
+    // TODO: load the rest of the tracks once the first one is working
+    // ByteData trackTwoMidiBytes = await rootBundle.load('assets/songs/test_song/midi/test_song_Db3.MID');
+    // List<Note> secondTrackNotes = loadNotesForTrackFromMidi(trackOneMidiBytes); 
+    // _secondTrackNotes = firstTrackNotes;
+
+    // ByteData trackThreeMidiBytes = await rootBundle.load('assets/songs/test_song/midi/test_song_D3.MID');
+    // List<Note> thirdTrackNotes = loadNotesForTrackFromMidi(trackOneMidiBytes); 
+    // _thirdTrackNotes = firstTrackNotes;
   }
 
-  /// Flame Lifecycle Methods
-  void resize(Size size) {
-    double middle = size.width/2;
-    firstPlaySquareX = middle - size.width * .2;
-    secondPlaySquareX = middle; 
-    thirdPlaySquareX = middle + size.width * .2;
-  
-    playSquaresY = size.height - (size.height / 4);
-  }
+  /// Adds bottom row of note buttons to baseGame component list
+  void _renderNoteButtonRow() {
+    double firstNoteButtonX = screenMiddle - size.width * .2;
+    Offset firstRectOffset = new Offset(firstNoteButtonX, noteButtonsY);
+    Color firstNoteButtonColor = const Color(0xFF990000);
 
-  render(Canvas canvas) {
-    double width = 20;
+    double secondNoteButtonX = screenMiddle; 
+    Offset secondRectOffset = new Offset(secondNoteButtonX, noteButtonsY);
+    Color secondNoteButtonColor = const Color(0xFF009900);
 
-    // Offset firstRectOffset = new Offset(firstPlaySquareX, playSquaresY);
-    // canvas.drawRect(Rect.fromCircle(center: firstRectOffset, radius: width), Paint()..color = const Color(0xFFFF00FF));
+    double thirdNoteButtonX = screenMiddle + size.width * .2;  
+    Offset thirdRectOffset = new Offset(thirdNoteButtonX, noteButtonsY);
+    Color thirdNoteButtonColor = const Color(0xFF000099);
 
-    // Offset secondRectOffset = new Offset(secondPlaySquareX, playSquaresY);
-    // canvas.drawRect(Rect.fromCircle(center: secondRectOffset, radius: width), Paint()..color = const Color(0xFFFF00FF));
-
-    // Offset thirdRectOffset = new Offset(thirdPlaySquareX, playSquaresY);
-    // canvas.drawRect(Rect.fromCircle(center: thirdRectOffset, radius: width), Paint()..color = const Color(0xFFFF00FF));
-  }
-
-  update() {
-    // print('BattleScreen update');
+    add(NoteButton(firstRectOffset, noteButtonWidth, firstNoteButtonColor));
+    add(NoteButton(secondRectOffset, noteButtonWidth, secondNoteButtonColor));
+    add(NoteButton(thirdRectOffset, noteButtonWidth, thirdNoteButtonColor));
   }
 }
