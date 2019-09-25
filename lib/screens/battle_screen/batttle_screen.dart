@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flame/components/component.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:midi_quest/screens/battle_screen/note_track.dart';
 
 import 'note.dart';
 import 'note_button.dart';
@@ -12,15 +13,26 @@ import 'note_loader.dart';
 class BattleScreen {
   void Function(Component) add;
   
-  List<Note> _firstTrackNotes = [];
-  // List<Note> _secondTrackNotes = [];
-  // List<Note> _thirdTrackNotes = [];
+  List<Note> _firstTrackNotes;
+  List<Note> _secondTrackNotes;
+  List<Note> _thirdTrackNotes;
 
   // constants for bottom row of noteButtons
   Size size;
   
-  double screenMiddle = 0.0;
-  double noteButtonsY = 0.0;
+  double screenMiddle;
+
+  double noteButtonsY;
+  double firstNoteButtonX;
+  Offset firstRectOffset;
+  Color firstNoteButtonColor;
+  double secondNoteButtonX;
+  Offset secondRectOffset;
+  Color secondNoteButtonColor;
+  double thirdNoteButtonX;
+  Offset thirdRectOffset;
+  Color thirdNoteButtonColor;
+
   double noteButtonWidth = 30;
 
   /// Constructs a new BattleScreen
@@ -35,6 +47,9 @@ class BattleScreen {
 
     // start rendering
     _renderNoteButtonRow();
+    List<List<Note>> allTrackNotes = [_firstTrackNotes, _secondTrackNotes, _thirdTrackNotes];
+    _renderTracks();
+    _renderFallingNotes(allTrackNotes);
   }
 
   /// Loads notes for the song that player is about to play
@@ -56,20 +71,33 @@ class BattleScreen {
 
   /// Adds bottom row of note buttons to baseGame component list
   void _renderNoteButtonRow() {
-    double firstNoteButtonX = screenMiddle - size.width * .2;
-    Offset firstRectOffset = new Offset(firstNoteButtonX, noteButtonsY);
+    firstNoteButtonX = screenMiddle - size.width * .2;
+    firstRectOffset = new Offset(firstNoteButtonX, noteButtonsY);
     Color firstNoteButtonColor = const Color(0xFF990000);
 
-    double secondNoteButtonX = screenMiddle; 
-    Offset secondRectOffset = new Offset(secondNoteButtonX, noteButtonsY);
+    secondNoteButtonX = screenMiddle; 
+    secondRectOffset = new Offset(secondNoteButtonX, noteButtonsY);
     Color secondNoteButtonColor = const Color(0xFF009900);
 
-    double thirdNoteButtonX = screenMiddle + size.width * .2;  
-    Offset thirdRectOffset = new Offset(thirdNoteButtonX, noteButtonsY);
+    thirdNoteButtonX = screenMiddle + size.width * .2;  
+    thirdRectOffset = new Offset(thirdNoteButtonX, noteButtonsY);
     Color thirdNoteButtonColor = const Color(0xFF000099);
 
     add(NoteButton(firstRectOffset, noteButtonWidth, firstNoteButtonColor));
     add(NoteButton(secondRectOffset, noteButtonWidth, secondNoteButtonColor));
     add(NoteButton(thirdRectOffset, noteButtonWidth, thirdNoteButtonColor));
+  }
+
+  void _renderTracks(){ 
+    add(new NoteTrack(firstNoteButtonX));
+    add(new NoteTrack(secondNoteButtonX));
+    add(new NoteTrack(thirdNoteButtonX));
+  }
+
+  void _renderFallingNotes(List<List<Note>> allTrackNotes) {
+    var firstTrackNotes = allTrackNotes[0];
+
+    // first track
+    add(new FallingNotes(firstTrackNotes, firstRectOffset, noteButtonWidth, firstNoteButtonColor));
   }
 }
